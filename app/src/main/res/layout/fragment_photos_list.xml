@@ -3,9 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".photolistscreen.fragments.PhotosListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/load_more_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photos_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_srlSpinnerStyle="Scale"/>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </FrameLayout>

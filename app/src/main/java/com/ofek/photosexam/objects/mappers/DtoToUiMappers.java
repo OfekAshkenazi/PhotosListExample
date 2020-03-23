@@ -7,7 +7,7 @@ public class DtoToUiMappers {
 
     public static UiPhoto photoMapper(PhotoDto photoDto){
         UiPhoto uiPhoto = new UiPhoto();
-        uiPhoto.setId(photoDto.getId());
+        uiPhoto.setGuruPhotoId(photoDto.getId());
         uiPhoto.setLikes(photoDto.getLikes());
         uiPhoto.setMaxHeight(photoDto.getHeight());
         uiPhoto.setMaxWidth(photoDto.getWidth());
