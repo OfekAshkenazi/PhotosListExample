@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.ofek.photosexam.R;
 import com.ofek.photosexam.common.Constants;
 import com.ofek.photosexam.objects.uiobjects.UiPhoto;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -67,6 +68,7 @@ public class SinglePhotoFragment extends Fragment {
         mainPhotoIV = view.findViewById(R.id.main_iv_photo_item);
         likeCountTv = view.findViewById(R.id.likes_count_tv_photo_item);
         viewsCountTv = view.findViewById(R.id.views_count_tv_photo_item);
+        View loadingView = view.findViewById(R.id.loader_photo_item);
         favBtnIv.setOnClickListener((favBtn)->{
             if (photo != null) {
                 // changes the btn state
@@ -75,10 +77,20 @@ public class SinglePhotoFragment extends Fragment {
                 listener.onFavoriteSelectionChanged(photo.getUuid().toString(),favBtn.isSelected());
             }
         });
+        loadingView.setVisibility(View.VISIBLE);
         Picasso.get()
                 .load(Constants.buildPhotoUrl(photo.getGuruPhotoId(),photo.getMaxWidth(),photo.getMaxHeight()))
-                .placeholder(R.drawable.ic_loader)
-                .fit().into(mainPhotoIV);
+                .fit().into(mainPhotoIV, new Callback() {
+            @Override
+            public void onSuccess() {
+                loadingView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                loadingView.setVisibility(View.INVISIBLE);
+            }
+        });
         likeCountTv.setText(String.format(Locale.US,"%d", photo.getLikes()));
         viewsCountTv.setText(String.format(Locale.US,"%d", photo.getViews()));
         favBtnIv.setSelected(photo.isFavorite());

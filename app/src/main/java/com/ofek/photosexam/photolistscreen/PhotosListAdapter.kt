@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ofek.photosexam.R
 import com.ofek.photosexam.common.Constants
 import com.ofek.photosexam.objects.uiobjects.UiPhoto
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class PhotosListAdapter(
@@ -36,9 +37,24 @@ class PhotosListAdapter(
         }
         holder.likeCountTv.text = item.likes.toString()
         holder.viewCountTv.text = item.views.toString()
+        holder.loaderView.visibility = View.VISIBLE
         Picasso.get()
-            .load(Constants.buildPhotoUrl(item.guruPhotoId, item.maxWidth, item.maxWidth))
-            .placeholder(R.drawable.ic_loader).fit().into(holder.mainPhotoIv)
+            .load(
+                Constants.buildPhotoUrl(
+                    item.guruPhotoId,
+                    item.maxWidth,
+                    item.maxHeight
+                )
+            )
+            .fit().into(holder.mainPhotoIv, object : Callback {
+                override fun onSuccess() {
+                    holder.loaderView.visibility = View.INVISIBLE
+                }
+
+                override fun onError(e: Exception) {
+                    holder.loaderView.visibility = View.INVISIBLE
+                }
+            })
     }
 
     /**
@@ -61,6 +77,7 @@ class PhotosListAdapter(
         val viewCountTv: AppCompatTextView = itemView.findViewById(R.id.views_count_tv_photo_item)
         val favBtnIv: AppCompatImageView = itemView.findViewById(R.id.like_btn_photo_item)
         val mainPhotoIv: AppCompatImageView = itemView.findViewById(R.id.main_iv_photo_item)
+        val loaderView: View = itemView.findViewById(R.id.loader_photo_item)
     }
 }
 
